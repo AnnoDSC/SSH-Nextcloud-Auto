@@ -7,20 +7,26 @@ mv nextcloud /var/www
 rm nextcloud-20.0.1.zip
 
 echo -e '
-Alias /nextcloud "/var/www/nextcloud/"
-
-<Directory /var/www/nextcloud/>
-  Options +FollowSymlinks
-  AllowOverride All
-
- <IfModule mod_dav.c>
-  Dav off
- </IfModule>
-
- SetEnv HOME /var/www/nextcloud
- SetEnv HTTP_HOME /var/www/nextcloud
-
-</Directory>
+<VirtualHost *:80>
+     ServerAdmin master@domain.com
+     DocumentRoot /var/www/nextcloud/
+     ServerName demo.domain.com
+     ServerAlias www.demo.domain.com
+  
+     Alias /nextcloud "/var/www/nextcloud/"
+     <Directory /var/www/nextcloud/>
+        Options +FollowSymlinks
+        AllowOverride All
+        Require all granted
+          <IfModule mod_dav.c>
+            Dav off
+          </IfModule>
+        SetEnv HOME /var/www/nextcloud
+        SetEnv HTTP_HOME /var/www/nextcloud
+     </Directory>
+     ErrorLog ${APACHE_LOG_DIR}/error.log
+     CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
 ' >> /etc/apache2/sites-available/nextcloud.conf
 
 sudo a2ensite nextcloud.conf
