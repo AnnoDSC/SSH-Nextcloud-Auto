@@ -29,8 +29,12 @@ echo -e '
 </VirtualHost>
 ' >> /etc/apache2/sites-available/nextcloud.conf
 
-sudo a2ensite nextcloud.conf
-sudo a2enmod rewrite headers env dir mime setenvif ssl
+a2ensite nextcloud.conf
+a2enmod rewrite
+a2enmod headers
+a2enmod env
+a2enmod dir
+a2enmod mime
 
 sudo chmod 775 -R /var/www/nextcloud/
 sudo chown www-data:www-data /var/www/nextcloud/ -R
